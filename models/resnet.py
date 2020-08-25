@@ -47,6 +47,7 @@ models_urls = {
     "152_nyu": "https://cloudstor.aarnet.edu.au/plus/s/EkPQzB2KtrrDnKf/download",
     "101_context": "https://cloudstor.aarnet.edu.au/plus/s/hqmplxWOBbOYYjN/download",
     "152_context": "https://cloudstor.aarnet.edu.au/plus/s/O84NszlYlsu00fW/download",
+    "18_imagenet": "https://download.pytorch.org/models/resnet18-5c106cde.pth",
     "50_imagenet": "https://download.pytorch.org/models/resnet50-19c8e357.pth",
     "101_imagenet": "https://download.pytorch.org/models/resnet101-5d3b4d8f.pth",
     "152_imagenet": "https://download.pytorch.org/models/resnet152-b121ed2d.pth",
@@ -236,6 +237,22 @@ class ResNetLW(nn.Module):
         out = self.clf_conv(x1)
         return out
 
+def rf_lw18(num_classes, imagenet=True, pretrained=False, **kwargs):
+    model = ResNetLW(Bottleneck, [2, 2, 2, 2], num_classes=num_classes, **kwargs)
+    if imagenet:
+        key = "18_imagenet"
+        url = models_urls[key]
+        model.load_state_dict(maybe_download(key, url), strict=False)
+    elif pretrained:
+        dataset = data_info.get(num_classes, None)
+        #cpkt = torch.load("/home/kong/Documents/light-weight-refinenet-master/ckpt/checkpoint.pth.tar")
+        if dataset:
+            bname = "50_" + dataset.lower()
+            key = "rf_lw" + bname
+            url = models_urls[bname]
+           # model.load_state_dict(cpkt["segmenter"])
+            model.load_state_dict(maybe_download(key, url), strict=False)
+    return model
 
 def rf_lw50(num_classes, imagenet=True, pretrained=False, **kwargs):
     model = ResNetLW(Bottleneck, [3, 4, 6, 3], num_classes=num_classes, **kwargs)

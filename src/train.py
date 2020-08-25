@@ -257,8 +257,9 @@ def get_arguments():
 
 def create_segmenter(net, pretrained, num_classes):
     """Create Encoder; for now only ResNet [50,101,152]"""
-    from models.resnet import rf_lw50, rf_lw101, rf_lw152
-
+    from models.resnet import rf_lw50, rf_lw101, rf_lw152,rf_lw18
+    if str(net) == "18":
+        return rf_lw18(num_classes, imagenet=pretrained)
     if str(net) == "50":
         return rf_lw50(num_classes, imagenet=pretrained)
     elif str(net) == "101":

@@ -20,7 +20,7 @@ HIGH_SCALE = [2.0] * 3
 IGNORE_LABEL = 255
 
 # ENCODER PARAMETERS
-ENC = "50"
+ENC = "18"
 ENC_PRETRAINED = True  # pre-trained on ImageNet or randomly initialised
 
 # GENERAL
